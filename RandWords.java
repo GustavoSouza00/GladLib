@@ -11,6 +11,7 @@ public class RandWords {
     private ArrayList<String> timeList;
     private ArrayList<String> verbList;
     private ArrayList<String> fruitList;
+    private ArrayList<String> usedWords;
     
     private Random myRandom;
 
@@ -18,6 +19,7 @@ public class RandWords {
 
     public RandWords(){
         initializeFromSource(dataSourceDirectory);
+        usedWords = new ArrayList<String>();
         myRandom = new Random();
     }
 
@@ -72,7 +74,19 @@ public class RandWords {
 		return "**UNKNOWN**";
     }
 
+    private Boolean verifyWord(String word){
+        Boolean result = true;
+
+        for(String words : usedWords){
+            if(word == words){
+                result = false;
+            }
+        }
+        return result;
+    }
+
     private String processWord(String w){
+        int size = 0;
         int first = w.indexOf("<");
         int last = w.indexOf(">", first);
 
@@ -82,7 +96,23 @@ public class RandWords {
 
         String prefix = w.substring(0, first);
         String suffix = w.substring(last+1);
-        String sub = getSubstring(w.substring(+1, last));
+        String sub = "";
+
+        while (size < (sub + "List").length()){
+            sub = getSubstring(w.substring(+1, last));
+            size++;
+            
+            if(verifyWord(sub)){
+                usedWords.add(sub);
+                break;
+            }else if(size < (sub + "List").length()){
+                sub = "none";
+                break;
+            }
+
+            
+        }
+        
 
         return prefix+sub+suffix;
     }
@@ -124,6 +154,7 @@ public class RandWords {
         System.out.println("\n");
         String story = fromTemplate("data/madtemplate2.txt");
         //printOut(story, 60);
+        System.out.println(usedWords);
         System.out.println(story);
     }
 
