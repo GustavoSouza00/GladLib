@@ -151,11 +151,16 @@ public class RandWords {
     }
 
     public void makeStrory(){
+        int countWords = usedWords.size();
         System.out.println("\n");
         String story = fromTemplate("data/madtemplate2.txt");
         //printOut(story, 60);
+        countWords -= +usedWords.size();
+        System.out.println(usedWords.size());
+        System.out.println(Math.abs(countWords));
         System.out.println(usedWords);
         System.out.println(story);
+
     }
 
 }
